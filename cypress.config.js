@@ -9,7 +9,7 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
       reporter: "mochawesome",
-        (config.specPattern = ["cypress/e2e/1-Belajar/Homapage.cy.js"]);
+        (config.specPattern = ["cypress/e2e/1-Belajar/Homepage.cy.js"]);
       return config;
     },
     viewportHeight: 768,
