@@ -16,11 +16,11 @@ module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
       // implement node event listeners here
-      reporter: "Test result",
-        // require("cypress-mochawesome-reporter/plugin")(on);
-        (config.specPattern = ["cypress/e2e/1-Belajar/karis/Sign_up.cy.js"]);
-      return config;
+      // require("cypress-mochawesome-reporter/plugin")(on);
+      //   (config.specPattern = ["cypress/e2e/1-Belajar/karis/Sign_up.cy.js"]);
+      // return config;
     },
+    reporter: "Test result",
     viewportHeight: 768,
     viewportWidth: 1500,
     experimentalStudio: true,
