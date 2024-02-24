@@ -1,10 +1,10 @@
 // cypress/e2e/signin.cy.js
 /// <reference types="cypress" />
 
-import userData from "../../../data/userData.json";
+import userData from "../../../fixtures/data/userData.json";
 import Navigation from "../../../support/PageObject/Navigation";
-import account from "../../../data/account.json";
-import msg from "../../../data/messageData.json";
+import account from "../../../fixtures/data/account.json";
+import msg from "../../../fixtures/data/messageData.json";
 
 // const account = UserLocator.getCustomer();
 const submit = Navigation.getSubmit();
@@ -17,11 +17,11 @@ describe("User Registration Test Suite", () => {
     cy.clearAllCookies;
   });
 
-  it("Verifikasi dapat membuat akun untuk masuk", () => {
+  it("TC-1_Verifikasi dapat membuat akun untuk masuk_(POSITIVE)", () => {
     const randomEmail = `test${Math.floor(Math.random() * 100000)}@example.com`;
     cy.get(account.first).type(userData.validUser.firstName);
     cy.get(account.last).type(userData.validUser.lastName);
-    cy.get(account.email).type(randomEmail);
+    cy.get(account.email).type(userData.validUser.email);
     cy.get(account.paswd).type(userData.validUser.password);
     cy.get(account.paswdConfirm).type(userData.validUser.password);
     cy.get(submit).click();
@@ -30,7 +30,7 @@ describe("User Registration Test Suite", () => {
       .should("contain", msg.registerSuccess);
   });
 
-  it("Verifikasi tidak dapat membuat akun untuk masuk dengan invalid email", () => {
+  it("TC-2_Verifikasi tidak dapat membuat akun untuk masuk dengan invalid email_(NEGATIVE)", () => {
     const randomEmail = `test${Math.floor(Math.random() * 100000)}@example.com`;
     cy.get(account.first).type(userData.invalidUser1.firstName);
     cy.get(account.last).type(userData.invalidUser1.lastName);
@@ -43,7 +43,7 @@ describe("User Registration Test Suite", () => {
       .should("contain", msg.passwordConfirmError);
   });
 
-  it("Verifikasi tidak dapat membuat akun untuk masuk dengan password hanya huruf", () => {
+  it("TC-3_Verifikasi tidak dapat membuat akun untuk masuk dengan password hanya huruf_(NEGATIVE)", () => {
     const randomEmail = `test${Math.floor(Math.random() * 100000)}@example.com`;
     cy.get(account.first).type(userData.invalidUser2.firstName);
     cy.get(account.last).type(userData.invalidUser2.lastName);
@@ -55,7 +55,7 @@ describe("User Registration Test Suite", () => {
       .should("contain", msg.password2);
   });
 
-  it("Verifikasi tidak dapat membuat akun untuk masuk dengan password hanya angka", () => {
+  it("TC-4_Verifikasi tidak dapat membuat akun untuk masuk dengan password hanya angka_(NEGATIVE)", () => {
     const randomEmail = `test${Math.floor(Math.random() * 100000)}@example.com`;
     cy.get(account.first).type(userData.invalidUser3.firstName);
     cy.get(account.last).type(userData.invalidUser3.lastName);
@@ -68,7 +68,7 @@ describe("User Registration Test Suite", () => {
       .should("contain", msg.password2);
   });
 
-  it("Verifikasi tidak dapat membuat akun untuk masuk dengan password dengan symbol", () => {
+  it("TC-5_Verifikasi tidak dapat membuat akun untuk masuk dengan password dengan symbol_(NEGATIVE)", () => {
     const randomEmail = `test${Math.floor(Math.random() * 100000)}@example.com`;
     cy.get(account.first).type(userData.invalidUser4.firstName);
     cy.get(account.last).type(userData.invalidUser4.lastName);
@@ -81,7 +81,7 @@ describe("User Registration Test Suite", () => {
       .should("contain", msg.password2);
   });
 
-  it("Verifikasi tidak dapat membuat akun untuk masuk dengan password dengan kombinasi huruf dan angka", () => {
+  it("TC-6_Verifikasi tidak dapat membuat akun untuk masuk dengan password dengan kombinasi huruf dan angka_(NEGATIVE)", () => {
     const randomEmail = `test${Math.floor(Math.random() * 100000)}@example.com`;
     cy.get(account.first).type(userData.invalidUser5.firstName);
     cy.get(account.last).type(userData.invalidUser5.lastName);
@@ -94,7 +94,7 @@ describe("User Registration Test Suite", () => {
       .should("contain", msg.password2);
   });
 
-  it("Verifikasi tidak dapat membuat akun untuk masuk dengan password dengan kombinasi huruf dan symbol", () => {
+  it("TC-7_Verifikasi tidak dapat membuat akun untuk masuk dengan password dengan kombinasi huruf dan symbol_(NEGATIVE)", () => {
     const randomEmail = `test${Math.floor(Math.random() * 100000)}@example.com`;
     cy.get(account.first).type(userData.invalidUser6.firstName);
     cy.get(account.last).type(userData.invalidUser6.lastName);
@@ -107,7 +107,7 @@ describe("User Registration Test Suite", () => {
       .should("contain", msg.password1);
   });
 
-  it("Verifikasi tidak dapat membuat akun untuk masuk dengan password dengan kombinasi angka dan symbol", () => {
+  it("TC-8_Verifikasi tidak dapat membuat akun untuk masuk dengan password dengan kombinasi angka dan symbol_(NEGATIVE)", () => {
     const randomEmail = `test${Math.floor(Math.random() * 100000)}@example.com`;
     cy.get(account.first).type(userData.invalidUser7.firstName);
     cy.get(account.last).type(userData.invalidUser7.lastName);
@@ -120,9 +120,21 @@ describe("User Registration Test Suite", () => {
       .should("contain", msg.password2);
   });
 
-  it("Verifikasi tidak dapat membuat akun untuk masuk jika semua kolom kosong", () => {
+  it("TC-9_Verifikasi tidak dapat membuat akun untuk masuk jika semua kolom kosong_(NEGATIVE)", () => {
     cy.get(submit).click();
     cy.get("#form-validate").should("be.visible");
+  });
+
+  it("TC-10_Verifikasi tidak dapat membuat akun jika email sudah terdaftar_(NEGATIVE)", () => {
+    cy.get(account.first).type(userData.validUser.firstName);
+    cy.get(account.last).type(userData.validUser.lastName);
+    cy.get(account.email).type(userData.validUser.email);
+    cy.get(account.paswd).type(userData.validUser.password);
+    cy.get(account.paswdConfirm).type(userData.validUser.password);
+    cy.get(submit).click();
+    cy.get(".message-error")
+      .should("be.visible")
+      .should("contain", msg.registerError3);
   });
 
   // Add more test cases for other scenarios related to user registration.
