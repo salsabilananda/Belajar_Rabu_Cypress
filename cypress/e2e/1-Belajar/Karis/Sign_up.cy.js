@@ -22,7 +22,9 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.validUser.firstName);
     cy.get(account.last).type(userData.validUser.lastName);
     cy.get(account.email).type(userData.validUser.email);
-    cy.get(account.paswd).type(userData.validUser.password);
+    cy.get(account.paswd).type(userData.validUser.password, {
+      sensitive: true,
+    });
     cy.get(account.paswdConfirm).type(userData.validUser.password);
     cy.get(submit).click();
     cy.get(account.successMessageRegist)
@@ -35,7 +37,9 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.invalidUser1.firstName);
     cy.get(account.last).type(userData.invalidUser1.lastName);
     cy.get(account.email).type(randomEmail);
-    cy.get(account.paswd).type(userData.invalidUser1.password);
+    cy.get(account.paswd).type(userData.invalidUser1.password, {
+      sensitive: true,
+    });
     cy.get(account.paswdConfirm).type("differentpassword");
     cy.get(submit).click();
     cy.get(account.ConfirmError)
@@ -48,7 +52,9 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.invalidUser2.firstName);
     cy.get(account.last).type(userData.invalidUser2.lastName);
     cy.get(account.email).type(randomEmail);
-    cy.get(account.paswd).type(userData.invalidUser2.password);
+    cy.get(account.paswd).type(userData.invalidUser2.password, {
+      sensitive: true,
+    });
     cy.get(account.paswdConfirm).type(userData.invalidUser2.password);
     cy.get(account.InvalidFormat)
       .should("be.visible")
@@ -60,8 +66,12 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.invalidUser3.firstName);
     cy.get(account.last).type(userData.invalidUser3.lastName);
     cy.get(account.email).type(randomEmail);
-    cy.get(account.paswd).type(userData.invalidUser3.password);
-    cy.get(account.paswdConfirm).type(userData.invalidUser3.password);
+    cy.get(account.paswd).type(userData.invalidUser3.password, {
+      sensitive: true,
+    });
+    cy.get(account.paswdConfirm).type(userData.invalidUser3.password, {
+      sensitive: true,
+    });
     cy.get(submit).click();
     cy.get(account.InvalidFormat)
       .should("be.visible")
@@ -73,8 +83,12 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.invalidUser4.firstName);
     cy.get(account.last).type(userData.invalidUser4.lastName);
     cy.get(account.email).type(randomEmail);
-    cy.get(account.paswd).type(userData.invalidUser4.password);
-    cy.get(account.paswdConfirm).type(userData.invalidUser4.password);
+    cy.get(account.paswd).type(userData.invalidUser4.password, {
+      sensitive: true,
+    });
+    cy.get(account.paswdConfirm).type(userData.invalidUser4.password, {
+      sensitive: true,
+    });
     cy.get(submit).click();
     cy.get(account.InvalidFormat)
       .should("be.visible")
@@ -86,8 +100,12 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.invalidUser5.firstName);
     cy.get(account.last).type(userData.invalidUser5.lastName);
     cy.get(account.email).type(randomEmail);
-    cy.get(account.paswd).type(userData.invalidUser5.password);
-    cy.get(account.paswdConfirm).type(userData.invalidUser5.password);
+    cy.get(account.paswd).type(userData.invalidUser5.password, {
+      sensitive: true,
+    });
+    cy.get(account.paswdConfirm).type(userData.invalidUser5.password, {
+      sensitive: true,
+    });
     cy.get(submit).click();
     cy.get(account.InvalidFormat)
       .should("be.visible")
@@ -99,8 +117,12 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.invalidUser6.firstName);
     cy.get(account.last).type(userData.invalidUser6.lastName);
     cy.get(account.email).type(randomEmail);
-    cy.get(account.paswd).type(userData.invalidUser6.password);
-    cy.get(account.paswdConfirm).type(userData.invalidUser6.password);
+    cy.get(account.paswd).type(userData.invalidUser6.password, {
+      sensitive: true,
+    });
+    cy.get(account.paswdConfirm).type(userData.invalidUser6.password, {
+      sensitive: true,
+    });
     cy.get(submit).click();
     cy.get(account.InvalidFormat)
       .should("be.visible")
@@ -112,8 +134,12 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.invalidUser7.firstName);
     cy.get(account.last).type(userData.invalidUser7.lastName);
     cy.get(account.email).type(randomEmail);
-    cy.get(account.paswd).type(userData.invalidUser7.password);
-    cy.get(account.paswdConfirm).type(userData.invalidUser7.password);
+    cy.get(account.paswd).type(userData.invalidUser7.password, {
+      sensitive: true,
+    });
+    cy.get(account.paswdConfirm).type(userData.invalidUser7.password, {
+      sensitive: true,
+    });
     cy.get(submit).click();
     cy.get(account.InvalidFormat)
       .should("be.visible")
@@ -129,8 +155,12 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.validUser.firstName);
     cy.get(account.last).type(userData.validUser.lastName);
     cy.get(account.email).type(userData.validUser.email);
-    cy.get(account.paswd).type(userData.validUser.password);
-    cy.get(account.paswdConfirm).type(userData.validUser.password);
+    cy.get(account.paswd).type(userData.validUser.password, {
+      sensitive: true,
+    });
+    cy.get(account.paswdConfirm).type(userData.validUser.password, {
+      sensitive: true,
+    });
     cy.get(submit).click();
     cy.get(".message-error")
       .should("be.visible")
