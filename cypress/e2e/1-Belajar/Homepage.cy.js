@@ -31,4 +31,16 @@ describe("Homepage Test Suite", () => {
   it("Menampilkan product populer pada halaman depan", () => {
     cy.get(stuff).should("have.length.above", 0);
   });
+
+  it("Verifikasi banner iklan", () => {
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get(".home-erin > .content > .info").click();
+    cy.get(":nth-child(5) > .filter-options-title").click();
+    cy.get(
+      '[href="https://magento.softwaretestingboard.com/collections/erin-recommends.html?color=60"] > .swatch-option'
+    ).click();
+    cy.get(":nth-child(2) > .product-item-info")
+      .should("be.visible")
+      .should("contain", "Diva Gym Tee");
+  });
 });

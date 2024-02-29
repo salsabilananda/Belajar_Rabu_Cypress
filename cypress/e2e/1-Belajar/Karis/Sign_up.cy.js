@@ -21,7 +21,7 @@ describe("User Registration Test Suite", () => {
     const randomEmail = `test${Math.floor(Math.random() * 100000)}@example.com`;
     cy.get(account.first).type(userData.validUser.firstName);
     cy.get(account.last).type(userData.validUser.lastName);
-    cy.get(account.email).type(userData.validUser.email);
+    cy.get(account.email).type(randomEmail);
     cy.get(account.paswd).type(userData.validUser.password, {
       sensitive: true,
     });
@@ -37,9 +37,7 @@ describe("User Registration Test Suite", () => {
     cy.get(account.first).type(userData.invalidUser1.firstName);
     cy.get(account.last).type(userData.invalidUser1.lastName);
     cy.get(account.email).type(randomEmail);
-    cy.get(account.paswd).type(userData.invalidUser1.password, {
-      sensitive: true,
-    });
+    cy.get(account.paswd).type(userData.invalidUser1.password);
     cy.get(account.paswdConfirm).type("differentpassword");
     cy.get(submit).click();
     cy.get(account.ConfirmError)
@@ -165,6 +163,18 @@ describe("User Registration Test Suite", () => {
     cy.get(".message-error")
       .should("be.visible")
       .should("contain", msg.registerError3);
+  });
+
+  it("TC-12_sembarangan_(NEGATIVE)", () => {
+    cy.get(account.first).click();
+    cy.get(account.last).click();
+    cy.get(account.email).click();
+    cy.get(account.paswd).click();
+    cy.get(account.ConfirmError).click();
+    cy.get(submit).click();
+    cy.get("#form-validate")
+      .should("be.visible")
+      .should("contain", msg.registerError1);
   });
 
   // Add more test cases for other scenarios related to user registration.

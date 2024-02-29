@@ -15,7 +15,23 @@
 //
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
+Cypress.Commands.add("verifyErrorMessage", (possibleErrorMessages) => {
+  cy.get(".message-error", { timeout: 20000 }).then(($errorMessages) => {
+    if ($errorMessages.length > 0) {
+      const displayedErrors = $errorMessages
+        .toArray()
+        .map((el) => el.innerText);
+      const randomErrorMessageDisplayed = displayedErrors.some((errorMessage) =>
+        possibleErrorMessages.includes(errorMessage)
+      );
+      expect(randomErrorMessageDisplayed).to.be.true;
+    } else {
+      expect(true, "No error message displayed").to.be.true;
+    }
+  });
+  cy.wait(Math.random() * 2000 + 1000);
+});
+
 //
 // -- This is a dual command --
 // Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
