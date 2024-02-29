@@ -2,10 +2,10 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   reporter: "cypress-mochawesome-reporter",
-  reporter: "reporters/custom.js",
+  // reporter: "reporters/custom.js",
   reporterOptions: {
     // reportDir: "cypress/results",
-    overwrite: false,
+    overwrite: true,
     html: true,
     json: true,
     embeddedScreenshots: true,
@@ -20,7 +20,7 @@ module.exports = defineConfig({
       //   (config.specPattern = ["cypress/e2e/1-Belajar/karis/Sign_up.cy.js"]);
       // return config;
     },
-    reporter: "Test result",
+    // reporter: "Test result",
     viewportHeight: 768,
     viewportWidth: 1500,
     experimentalStudio: true,
