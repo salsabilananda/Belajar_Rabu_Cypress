@@ -1,12 +1,12 @@
 // cypress/e2e/signin.cy.js
 /// <reference types="cypress" />
 
-import LoginPage from "../../../support/PageObject/LoginPage";
-import Navigation from "../../../support/PageObject/Navigation";
-import userData from "../../../fixtures/data/userData.json";
-import { visible } from "ansi-colors";
-import { should } from "chai";
-import msg from "../../../fixtures/data/messageData.json";
+import LoginPage from "../../../../support/PageObject/LoginPage.js";
+import Navigation from "../../../../support/PageObject/Navigation.js";
+import userData from "../../../../fixtures/data/userData.json";
+// import { visible } from "ansi-colors";
+// import { should } from "chai";
+// import msg from "../../../../fixtures/data/messageData.json";
 
 const loginPage = new LoginPage();
 const possibleErrorMessages = [
@@ -15,7 +15,7 @@ const possibleErrorMessages = [
   "A login and a password are required.",
 ]; // Possible error messages
 
-describe("Login Functionality Test Suite", () => {
+describe("[FT]_Login Functionality Test Suite", () => {
   beforeEach(() => {
     Navigation.visitAccount();
     cy.clearCookies();
