@@ -1,0 +1,127 @@
+describe("Vulnerability Test Suite", () => {
+  // Test for SQL Injection vulnerability
+  it("should not allow SQL Injection", () => {
+    cy.visit(
+      "https://magento.softwaretestingboard.com/customer/account/login/"
+    );
+    cy.get("#email").type("' OR '1'='1");
+    cy.get("#pass").type("testpassword");
+    cy.get("#send2").click();
+    cy.url().should("include", "/customer/account/login/");
+  });
+
+  // Test for Cross-Site Scripting (XSS) vulnerability
+  it("should not allow XSS", () => {
+    cy.visit("https://magento.softwaretestingboard.com/contacts/index/post/");
+    cy.get("#name").type('<script>alert("XSS")</script>');
+    cy.get("#comment").type("Test comment");
+    cy.get("#send").click();
+    cy.get("script").should("not.exist");
+  });
+
+  // Test for Cross-Site Request Forgery (CSRF) vulnerability
+  it("should not allow CSRF", () => {
+    cy.visit(
+      "https://magento.softwaretestingboard.com/customer/account/login/"
+    );
+    cy.get("#email").type("testuser");
+    cy.get("#pass").type("testpassword");
+    cy.get("#send2").click();
+    cy.url().should("include", "/customer/account/login/");
+    // Attempt to perform an action without CSRF token
+    cy.request({
+      method: "POST",
+      url: "https://magento.softwaretestingboard.com/customer/account/logout/",
+      body: {
+        // Simulate a logout request without CSRF token
+      },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }).then((response) => {
+      expect(response.status).to.eq(403); // Assuming a 403 Forbidden status for unauthorized requests
+    });
+  });
+
+  // Test for session management vulnerabilities
+  it("should not allow session fixation", () => {
+    cy.visit(
+      "https://magento.softwaretestingboard.com/customer/account/login/"
+    );
+    cy.get("#email").type("testuser");
+    cy.get("#pass").type("testpassword");
+    cy.get("#send2").click();
+    cy.url().should("include", "/customer/account/login/");
+    // Simulate a session fixation attack
+    cy.request({
+      method: "GET",
+      url: "https://magento.softwaretestingboard.com/customer/account/login/",
+      qs: {
+        session_id: "attacker_session_id",
+      },
+    }).then((response) => {
+      expect(response.headers["set-cookie"]).to.include(
+        "session_id=attacker_session_id"
+      );
+    });
+  });
+
+  // Test for Insecure Direct Object References (IDOR)
+  it("should not allow IDOR", () => {
+    cy.visit(
+      "https://magento.softwaretestingboard.com/customer/account/login/"
+    );
+    cy.get("#email").type("testuser");
+    cy.get("#pass").type("testpassword");
+    cy.get("#send2").click();
+    cy.url().should("include", "/customer/account/login/");
+    // Attempt to access a customer's order details without proper authentication
+    cy.request({
+      method: "GET",
+      url: "https://magento.softwaretestingboard.com/customer/order/view/order_id/12345",
+    }).then((response) => {
+      expect(response.status).to.eq(403); // Assuming a 403 Forbidden status for unauthorized requests
+    });
+  });
+
+  // Test for secure cookie handling
+  it("should handle cookies securely", () => {
+    cy.visit(
+      "https://magento.softwaretestingboard.com/customer/account/login/"
+    );
+    cy.get("#email").type("testuser");
+    cy.get("#pass").type("testpassword");
+    cy.get("#send2").click();
+    cy.url().should("include", "/customer/account/login/");
+    // Check if the session cookie is secure
+    cy.getCookie("frontend").should("have.property", "secure", true);
+  });
+
+  // Test for user input validation vulnerabilities
+  it("should validate user input", () => {
+    cy.visit(
+      "https://magento.softwaretestingboard.com/customer/account/login/"
+    );
+    cy.get("#email").type("invalid_email");
+    cy.get("#pass").type("testpassword");
+    cy.get("#send2").click();
+    // Check for an error message indicating invalid input
+    cy.contains("Invalid email or password");
+  });
+
+  // Test for insecure file uploads
+  it("should not allow insecure file uploads", () => {
+    cy.visit(
+      "https://magento.softwaretestingboard.com/customer/account/login/"
+    );
+    cy.get("#email").type("testuser");
+    cy.get("#pass").type("testpassword");
+    cy.get("#send2").click();
+    cy.url().should("include", "/customer/account/login/");
+    // Attempt to upload a file without proper validation
+    cy.get("#file-upload-field").attachFile("unauthorized_file.jpg");
+    cy.get("#upload-button").click();
+    // Check for an error message or redirect to an error page
+    cy.contains("File upload failed");
+  });
+});

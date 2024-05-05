@@ -1,10 +1,10 @@
 // cypress/e2e/signin.cy.js
 /// <reference types="cypress" />
 
-import userData from "../../../fixtures/data/userData.json";
-import Navigation from "../../../support/PageObject/Navigation";
-import account from "../../../fixtures/data/account.json";
-import msg from "../../../fixtures/data/messageData.json";
+import userData from "../../../../fixtures/data/userData.json";
+import Navigation from "../../../../support/PageObject/Navigation.js";
+import account from "../../../../fixtures/data/account.json";
+import msg from "../../../../fixtures/data/messageData.json";
 
 // const account = UserLocator.getCustomer();
 const submit = Navigation.getSubmit();

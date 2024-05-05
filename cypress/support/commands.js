@@ -32,6 +32,20 @@ Cypress.Commands.add("verifyErrorMessage", (possibleErrorMessages) => {
   cy.wait(Math.random() * 2000 + 1000);
 });
 
+Cypress.Commands.add("apiRequest", ({ method, url, auth, body }) => {
+  const requestOptions = {
+    method,
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${auth.accessToken}`,
+    },
+    body: JSON.stringify(body),
+  };
+
+  return cy.request(requestOptions);
+});
+
 //
 // -- This is a dual command --
 // Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
