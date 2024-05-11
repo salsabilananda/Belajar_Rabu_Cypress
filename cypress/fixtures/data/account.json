@@ -42,8 +42,7 @@
   "messageContents": ".message span",
   "InvalidFormat": ".account > .password > .control",
   "ConfirmError": ".confirmation > .control",
-  "Errormsg" : ".message-error > div",
-  "RegistError1":".form-validate",
-  "RegistError2":".maincontent" 
-  
+  "Errormsg": ".message-error > div",
+  "RegistError1": ".form-validate",
+  "RegistError2": ".maincontent"
 }

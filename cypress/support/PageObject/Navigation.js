@@ -1,7 +1,7 @@
 // cypress/page/Navigation.js
 class Navigation {
   visitHomepage() {
-    cy.visit("https://magento.softwaretestingboard.com/");
+    cy.visit("https://magento.softwaretestingboard.com/", { timeout: 6000 });
   }
   visitAccount() {
     cy.visit(
