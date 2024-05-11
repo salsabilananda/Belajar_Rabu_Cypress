@@ -19,7 +19,7 @@ describe("Test suite Create Account", () => {
   });
 
   describe("POSITIVE", () => {
-    it.only("valid user name & password", () => {
+    it("valid user name & password", () => {
       cy.get(account.first).type(user.validUser.firstName);
       cy.get(account.last).type(user.validUser.lastName);
       cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
@@ -169,10 +169,7 @@ describe("Test suite Create Account", () => {
         user.validUser["password-confirmation"]
       );
       cy.get(getPages.getSubmit()).click();
-      cy.get("#form-validate > .account").should(
-        "contain",
-        message.registerError2
-      );
+      cy.get(account.Errormsg).should("contain", message.registerError2);
     });
   });
 });
