@@ -6,6 +6,7 @@
     "password": "test@1234",
     "password-confirmation": "test@1234"
   },
+
   "invalidUser1": {
     "firstName": "Jane",
     "lastName": "Smith",
@@ -45,7 +46,7 @@
     "firstName": "user6",
     "lastName": "user6",
     "email": "user6@test.com",
-    "password": "zz66@@",
+    "password": "zz66@@7788",
     "password-confirmation": "zz@@"
   },
   "invalidUser7": {
