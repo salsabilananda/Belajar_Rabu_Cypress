@@ -21,7 +21,7 @@ module.exports = defineConfig({
       inlineAssets: true,
     },
   },
-  pageLoadTimeout: 60000,
+  pageLoadTimeout: 50000,
 
   e2e: {
     setupNodeEvents(on, config) {
@@ -37,8 +37,7 @@ module.exports = defineConfig({
         await afterRunHook();
       });
       config.specPattern = [
-        "cypress/e2e/1-Belajar/karis/FT/Login.cy.js",
-        "cypress/e2e/1-Belajar/karis/Non_FT/API.cy.js",
+        "cypress/e2e/1-Belajar/Hadi/FT/registration.cy.js",
       ];
       return config;
     },
