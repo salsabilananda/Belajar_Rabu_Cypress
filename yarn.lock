@@ -2201,10 +2201,6 @@ cypress-multi-reporters@^1.6.4:
     debug "^4.3.4"
     lodash "^4.17.21"
 
-cypress@^13.8.1, cypress@>=6.2.0:
-  version "13.8.1"
-  resolved "https://registry.npmjs.org/cypress/-/cypress-13.8.1.tgz"
-  integrity sha512-Uk6ovhRbTg6FmXjeZW/TkbRM07KPtvM5gah1BIMp4Y2s+i/NMxgaLw0+PbYTOdw1+egE0FP3mWRiGcRkjjmhzA==
   dependencies:
     "@cypress/request" "^3.0.0"
     "@cypress/xvfb" "^1.2.4"
