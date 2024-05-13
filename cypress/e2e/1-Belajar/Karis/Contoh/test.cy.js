@@ -37,19 +37,17 @@ import msg from "../../../../fixtures/data/messageData.json";
 //     cy.clearCookies();
 //   });
 
-//   it("TC-1_Verifikasi login akun untuk masuk_(POSITIVE)", () => {
-//     cy.get(account.loginEmailInputSelector).type(userData.validUser.email);
-//     cy.get(account.loginPasswordInputSelector).type(
-//       userData.validUser.password
-//     );
-//     cy.get(
-//       ".login-container > .block-customer-login > .block-content > #login-form > .fieldset > .actions-toolbar > div.primary > #send2"
-//     ).click();
-//     // cy.get(account.successMessageRegist)
-//     cy.get("#maincontent").should("be.visible").should("contain", "My Account");
-//   });
+it("TC-1_Verifikasi login akun untuk masuk_(POSITIVE)", () => {
+  cy.get(account.loginEmailInputSelector).type(userData.validUser.email);
+  cy.get(account.loginPasswordInputSelector).type(userData.validUser.password);
+  cy.get(
+    ".login-container > .block-customer-login > .block-content > #login-form > .fieldset > .actions-toolbar > div.primary > #send2"
+  ).click();
+  // cy.get(account.successMessageRegist)
+  cy.get("#maincontent").should("be.visible").should("contain", "My Account");
+});
 
-// const account = UserLocator.getCustomer();
+const account = UserLocator.getCustomer();
 const submit = Navigation.loginSubmit();
 
 describe("User Login Test Suite", () => {
