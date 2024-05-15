@@ -21,7 +21,7 @@ module.exports = defineConfig({
       inlineAssets: true,
     },
   },
-  pageLoadTimeout: 60000,
+  pageLoadTimeout: 50000,
 
   e2e: {
     setupNodeEvents(on, config) {
