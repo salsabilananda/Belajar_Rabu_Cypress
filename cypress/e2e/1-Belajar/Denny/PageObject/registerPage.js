@@ -5,11 +5,16 @@ export const register = () => {
 
   const randomEmail = Math.floor(Math.random() * 100000);
 
-  const registerUser = (username, password) => {
-    usernameInput().type(username);
-    passwordInput().type(password);
-    submitButton().click();
+  const loginUser = (username, password) => {
+    if (!username && !password) {
+      usernameInput().invoke("val", username);
+      passwordInput().invoke("val", password);
+      submitButton().click();
+    } else {
+      usernameInput().type(username);
+      passwordInput().type(password);
+      submitButton().click();
+    }
   };
-
-  return { registerUser, randomEmail };
+  return { loginUser, randomEmail };
 };
