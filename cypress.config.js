@@ -43,8 +43,8 @@ module.exports = defineConfig({
       // return config;
     },
 
-    viewportHeight: 768,
-    viewportWidth: 1500,
+    viewportHeight: 800,
+    viewportWidth: 1700,
     experimentalStudio: true,
   },
 });
