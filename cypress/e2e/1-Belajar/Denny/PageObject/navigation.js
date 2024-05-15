@@ -1,56 +1,69 @@
-// cypress/page/Navigation.js
-class Navigation {
-  visitHomepage() {
-    cy.visit("https://magento.softwaretestingboard.com/", { timeout: 6000 });
-  }
-  visitAccount() {
+export const pages = () => {
+  const visitHome = () => {
+    cy.visit("https://magento.softwaretestingboard.com/");
+  };
+
+  const visitAccount = () => {
     cy.visit(
       "https://magento.softwaretestingboard.com/customer/account/login/"
     );
-  }
-  visitHoodie() {
-    cy.visit("https://magento.softwaretestingboard.com/hero-hoodie.html");
-  }
-  visitTshirt() {
-    cy.visit("https://magento.softwaretestingboard.com/radiant-tee.html");
-  }
-  visitOrderHistory() {
-    cy.visit("https://magento.softwaretestingboard.com/sales/order/history/");
-  }
+  };
 
-  visitDownloadProduct() {
+  const visitHoodie = () => {
+    cy.visit("https://magento.softwaretestingboard.com/hero-hoodie.html");
+  };
+  const visitTshirt = () => {
+    cy.visit("https://magento.softwaretestingboard.com/radiant-tee.html");
+  };
+  const visitOrderHistory = () => {
+    cy.visit("https://magento.softwaretestingboard.com/sales/order/history/");
+  };
+
+  const visitDownloadProduct = () => {
     cy.visit(
       "https://magento.softwaretestingboard.com/downloadable/customer/products/"
     );
-  }
+  };
 
-  visitWishList() {
+  const visitWishList = () => {
     cy.visit("https://magento.softwaretestingboard.com/wishlist/");
-  }
+  };
 
-  visitAddressBook() {
+  const visitAddressBook = () => {
     cy.visit("https://magento.softwaretestingboard.com/customer/address/");
-  }
+  };
 
-  visitAccountInformation() {
+  const visitAccountInformation = () => {
     cy.visit("https://magento.softwaretestingboard.com/customer/account/edit/");
-  }
+  };
 
-  visitPaymentMethod() {
+  const visitPaymentMethod = () => {
     cy.visit(
       "https://magento.softwaretestingboard.com/vault/cards/listaction/"
     );
-  }
+  };
 
-  visitProductReview() {
+  const visitProductReview = () => {
     cy.visit("https://magento.softwaretestingboard.com/review/customer/");
-  }
-  getSubmit() {
-    return "#form-validate > .actions-toolbar > div.primary > .action";
-  }
-  loginSubmit() {
-    return ".login-container > .block-customer-login > .block-content > #login-form > .fieldset > .actions-toolbar > div.primary > #send2";
-  }
-}
+  };
 
-export default new Navigation();
+  const getSubmit = () => {
+    return "#form-validate > .actions-toolbar > div.primary > .action";
+  };
+
+  return {
+    visitAccount,
+    getSubmit,
+    visitAccountInformation,
+    visitAddressBook,
+    visitDownloadProduct,
+    visitDownloadProduct,
+    visitHome,
+    visitHoodie,
+    visitOrderHistory,
+    visitPaymentMethod,
+    visitProductReview,
+    visitTshirt,
+    visitWishList,
+  };
+};

@@ -21,7 +21,7 @@ module.exports = defineConfig({
       inlineAssets: true,
     },
   },
-  pageLoadTimeout: 60000,
+  pageLoadTimeout: 50000,
 
   e2e: {
     setupNodeEvents(on, config) {
@@ -43,8 +43,8 @@ module.exports = defineConfig({
       // return config;
     },
 
-    viewportHeight: 768,
-    viewportWidth: 1500,
+    viewportHeight: 800,
+    viewportWidth: 1700,
     experimentalStudio: true,
   },
 });
