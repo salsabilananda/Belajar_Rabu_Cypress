@@ -171,5 +171,21 @@ describe("Test suite Create Account", () => {
       cy.get(getPages.getSubmit()).click();
       cy.get(account.Errormsg).should("contain", message.registerError2);
     });
+
+    it.only("Create an account with the weakness password", () => {
+      const weakPassword = 1;
+      cy.get(account.first).type(user.validUser.firstName);
+      cy.get(account.last).type(user.validUser.lastName);
+      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
+      cy.get(account.paswd)
+        .type(weakPassword)
+        .invoke("val")
+        .should("have.length", 1);
+      cy.get(account.paswdConfirm).type(
+        user.validUser["password-confirmation"]
+      );
+      cy.get(getPages.getSubmit()).click();
+      cy.get("#password-strength-meter").contains("Password Strength: Weak");
+    });
   });
 });

@@ -44,5 +44,6 @@
   "ConfirmError": ".confirmation > .control",
   "Errormsg": ".message-error > div",
   "RegistError1": ".form-validate",
-  "RegistError2": ".maincontent"
+  "RegistError2": ".maincontent",
+  "userLogin": ".panel.wrapper > .panel"
 }
