@@ -28,34 +28,13 @@ import Navigation from "../../../../support/PageObject/Navigation.js";
 import account from "../../../../fixtures/data/account.json";
 import msg from "../../../../fixtures/data/messageData.json";
 
-// const account = UserLocator.getCustomer();
-// const submit = Navigation.visitAccount();
-
-// describe("User Login Test Suite", () => {
-//   beforeEach(() => {
-//     Navigation.visitAccount();
-//     cy.clearCookies();
-//   });
-
-it("TC-1_Verifikasi login akun untuk masuk_(POSITIVE)", () => {
-  cy.get(account.loginEmailInputSelector).type(userData.validUser.email);
-  cy.get(account.loginPasswordInputSelector).type(userData.validUser.password);
-  cy.get(
-    ".login-container > .block-customer-login > .block-content > #login-form > .fieldset > .actions-toolbar > div.primary > #send2"
-  ).click();
-  // cy.get(account.successMessageRegist)
-  cy.get("#maincontent").should("be.visible").should("contain", "My Account");
-});
-
 const account = UserLocator.getCustomer();
-const submit = Navigation.loginSubmit();
+const submit = Navigation.visitAccount();
 
 describe("User Login Test Suite", () => {
   beforeEach(() => {
     Navigation.visitAccount();
-    cy.clearAllCookies;
-    cy.contains("Sign In").click();
-    cy.clearAllCookies;
+    cy.clearCookies();
   });
 
   it("TC-1_Verifikasi login akun untuk masuk_(POSITIVE)", () => {
@@ -63,7 +42,33 @@ describe("User Login Test Suite", () => {
     cy.get(account.loginPasswordInputSelector).type(
       userData.validUser.password
     );
-    cy.get(submit).click();
+    cy.get(
+      ".login-container > .block-customer-login > .block-content > #login-form > .fieldset > .actions-toolbar > div.primary > #send2"
+    ).click();
+    // cy.get(account.successMessageRegist)
     cy.get("#maincontent").should("be.visible").should("contain", "My Account");
+  });
+
+  const account = UserLocator.getCustomer();
+  const submit = Navigation.loginSubmit();
+
+  describe("User Login Test Suite", () => {
+    beforeEach(() => {
+      Navigation.visitAccount();
+      cy.clearAllCookies;
+      cy.contains("Sign In").click();
+      cy.clearAllCookies;
+    });
+
+    it("TC-1_Verifikasi login akun untuk masuk_(POSITIVE)", () => {
+      cy.get(account.loginEmailInputSelector).type(userData.validUser.email);
+      cy.get(account.loginPasswordInputSelector).type(
+        userData.validUser.password
+      );
+      cy.get(submit).click();
+      cy.get("#maincontent")
+        .should("be.visible")
+        .should("contain", "My Account");
+    });
   });
 });
