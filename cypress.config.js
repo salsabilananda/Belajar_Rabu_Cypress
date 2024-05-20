@@ -6,6 +6,7 @@ const {
 } = require("cypress-mochawesome-reporter/lib");
 
 module.exports = defineConfig({
+  projectId: "8u86z2",
   reporter: "cypress-mochawesome-reporter",
   reporterOptions: {
     reporterEnabled: "mochawesome",
@@ -24,7 +25,6 @@ module.exports = defineConfig({
   pageLoadTimeout: 50000,
 
   e2e: {
-    projectId: "a8t6pg4",
     setupNodeEvents(on, config) {
       // implement node event listeners here
       require("cypress-mochawesome-reporter/plugin")(on);
@@ -37,10 +37,7 @@ module.exports = defineConfig({
         console.log("override after:run");
         await afterRunHook();
       });
-      config.specPattern = [
-        "cypress/e2e/1-Belajar/karis/FT/Login.cy.js",
-        "cypress/e2e/1-Belajar/karis/Non_FT/API.cy.js",
-      ];
+      config.specPattern = ["cypress/e2e/1-Belajar/karis/**/*.cy.js"];
       return config;
     },
 

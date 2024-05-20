@@ -1,12 +1,4 @@
 {
-  "devDependencies": {
-
-    "cypress-mochawesome-reporter": "^3.8.2",
-    "cypress-multi-reporters": "^1.6.4",
-    "mochawesome": "^7.1.3",
-    "mochawesome-merge": "^4.3.0",
-    "mochawesome-screenshots": "^1.7.0"
-  },
   "name": "belajar_rabu_cypress",
   "version": "1.0.0",
   "description": "Latihan bareng-bareng Cypress\r Test",
