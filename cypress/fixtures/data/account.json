@@ -1,6 +1,7 @@
 {
   "changePasswordFormSelector": "#form-validate",
   "addAddressFormSelector": "#form-validate",
+  "formRegister": "#form-validate",
   "first": "#firstname",
   "last": "#lastname",
   "currentPasswordInputSelector": "#current-password",
@@ -45,5 +46,10 @@
   "Errormsg": ".message-error > div",
   "RegistError1": ".form-validate",
   "RegistError2": ".maincontent",
-  "userLogin": ".panel.wrapper > .panel"
+  "userLogin": ".panel.wrapper > .panel",
+  "firstnameError": "#firstname-error",
+  "lastnameError": "#lastname-error",
+  "emailError": "#email_address-error",
+  "passwordError": "#password-error",
+  "confirmPasswordError": "#password-confirmation-error"
 }

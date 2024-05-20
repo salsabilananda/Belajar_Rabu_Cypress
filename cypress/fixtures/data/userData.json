@@ -3,8 +3,8 @@
     "firstName": "kelompok",
     "lastName": "Rabu",
     "email": "teamRabu@test.com",
-    "password": "test@1234",
-    "password-confirmation": "test@1234"
+    "password": "test@1234*#&^%",
+    "password-confirmation": "test@1234*#&^%"
   },
 
   "invalidUser1": {
