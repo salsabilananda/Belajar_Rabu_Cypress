@@ -1,14 +1,22 @@
 /// <reference types = "cypress" />
 
 const message = require("../../../../fixtures/data/messageData.json");
-const account = require("../../../../fixtures/data/account.json");
 const user = require("../../../../fixtures/data/userData.json");
-const { pages } = require("../PageObject/navigation");
-const { register } = require("../PageObject/registerPage");
-const { should } = require("chai");
+const account = require("../../../../fixtures/data/account.json");
+const {
+  pages,
+} = require("../../../../support/PageObject_byFunction/navigation");
+const {
+  register,
+} = require("../../../../support/PageObject_byFunction/registerPage");
+const {
+  clearData,
+} = require("../../../../support/PageObject_byFunction/clear");
 
 const getPages = pages();
 const dataRegister = register();
+const clearDataRegister = clearData();
+const randomEmail = Math.floor(Math.random() * 100000);
 
 describe("Test suite Create Account", () => {
   beforeEach(() => {
@@ -20,128 +28,157 @@ describe("Test suite Create Account", () => {
 
   describe("POSITIVE", () => {
     it("valid user name & password", () => {
-      cy.get(account.first).type(user.validUser.firstName);
-      cy.get(account.last).type(user.validUser.lastName);
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd).type(user.validUser.password);
-      cy.get(account.paswdConfirm).type(
+      dataRegister.firstNameInput(user.validUser.firstName);
+      dataRegister.lastNameInput(user.validUser.lastName);
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.passwordInput(user.validUser.password);
+      dataRegister.confirmPasswordInput(
         user.validUser["password-confirmation"]
       );
-      cy.get(getPages.getSubmit()).click();
-      cy.get(".message-success").should("contain", message.registerSuccess);
+
+      cy.get("#password-strength-meter-label").should((strength) => {
+        const strengthText = strength.text();
+        if (strengthText.includes("Medium")) {
+          expect(strengthText).to.contain("Medium");
+        } else if (strengthText.includes("Strong")) {
+          expect(strengthText).to.contain("Strong");
+        } else {
+          expect(strengthText).to.contain("Very Strong");
+        }
+      });
+
+      dataRegister.getSubmit();
+      cy.get("#maincontent")
+        .should("contain", message.registerSuccess)
+        .and("contain", "Account Information");
     });
   });
 
   describe("NEGATIVE", () => {
-    it("Empty username & password", () => {
-      cy.get(account.first).should("be.empty");
-      cy.get(account.last).should("be.empty");
-      cy.get(account.email).should("be.empty");
-      cy.get(account.paswd).should("be.empty");
-      cy.get(account.paswdConfirm).should("be.empty");
-      cy.get(getPages.getSubmit()).click();
-      cy.get("#maincontent").should("contain", message.registerError1);
+    it.only("Empty username, email & password", () => {
+      dataRegister.getSubmit();
+      cy.get(account.firstnameError).should("contain", message.registerError1);
+      cy.get(account.lastnameError).should("contain", message.registerError1);
+      cy.get(account.emailError).should("contain", message.registerError1);
+      cy.get(account.passwordError).should("contain", message.registerError1);
+      cy.get(account.confirmPasswordError).should(
+        "contain",
+        message.registerError1
+      );
     });
 
     it("Empty username & valid password", () => {
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd).type(user.validUser.password);
-      cy.get(account.paswdConfirm).type(
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.passwordInput(user.validUser.password);
+      dataRegister.confirmPasswordInput(
         user.validUser["password-confirmation"]
       );
-      cy.get(getPages.getSubmit()).click();
-      cy.get("#maincontent").should("contain", message.registerError1);
+      dataRegister.getSubmit();
+      cy.get(account.firstnameError).should("contain", message.registerError1);
+      cy.get(account.lastnameError).should("contain", message.registerError1);
     });
 
     it("Valid username & empty password", () => {
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.first).type(user.validUser.firstName);
-      cy.get(account.last).type(user.validUser.lastName);
-      cy.get(getPages.getSubmit()).click();
+      dataRegister.firstNameInput(user.validUser.firstName);
+      dataRegister.lastNameInput(user.validUser.lastName);
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.getSubmit();
       cy.get("#maincontent").should("contain", message.registerError1);
+      cy.get(".account > .password")
+        .should("contain", "Password Strength:")
+        .and("include.text", "No Password");
     });
 
     it("Create account with the wrong email format", () => {
-      cy.get(account.first).type(user.validUser.firstName);
-      cy.get(account.last).type(user.validUser.lastName);
-      cy.get(account.email).type(dataRegister.randomEmail);
-      cy.get(account.paswd).type(user.validUser.password);
-      cy.get(account.paswdConfirm).type(
-        user.validUser["password-confirmation"]
-      );
-      cy.get(getPages.getSubmit()).click();
-      cy.get("#email_address-error").should("contain", message.InvalidEmail);
+      const invalidEmail = ["@", "@gmail", ".com"];
+
+      invalidEmail.forEach((mail) => {
+        dataRegister.firstNameInput(user.validUser.firstName);
+        dataRegister.lastNameInput(user.validUser.lastName);
+        dataRegister.emailInput(mail);
+        dataRegister.passwordInput(user.validUser.password);
+        dataRegister.confirmPasswordInput(
+          user.validUser["password-confirmation"]
+        );
+        dataRegister.getSubmit();
+        cy.get("#email_address-error").should("contain", message.InvalidEmail);
+        clearDataRegister.clearAllRegister();
+      });
     });
 
-    it("Create an account with a password of less than 8 character", () => {
-      cy.get(account.first).type(user.invalidUser1.firstName);
-      cy.get(account.last).type(user.invalidUser1.lastName);
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd).type(user.invalidUser1.password);
-      cy.get(account.paswdConfirm).type(
+    it("Create an account with the weakness password", () => {
+      dataRegister.firstNameInput(user.invalidUser1.firstName);
+      dataRegister.lastNameInput(user.invalidUser1.lastName);
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.passwordInput(user.invalidUser1.password);
+      dataRegister.confirmPasswordInput(
         user.invalidUser1["password-confirmation"]
       );
+      dataRegister.getSubmit();
       cy.get(getPages.getSubmit()).click();
-      cy.get("#form-validate > .account").should("contain", message.password1);
+      cy.get("#form-validate > .account")
+        .should("contain", message.password1)
+        .and("contain", "Password Strength:")
+        .and("include.text", "Weak");
     });
 
     it("Create an account with a password only in lowercase letters", () => {
-      cy.get(account.first).type(user.invalidUser2.firstName);
-      cy.get(account.last).type(user.invalidUser2.lastName);
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd).type(user.invalidUser2.password);
-      cy.get(account.paswdConfirm).type(
+      dataRegister.firstNameInput(user.invalidUser2.firstName);
+      dataRegister.lastNameInput(user.invalidUser2.lastName);
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.passwordInput(user.invalidUser2.password);
+      dataRegister.confirmPasswordInput(
         user.invalidUser2["password-confirmation"]
       );
-      cy.get(getPages.getSubmit()).click();
+      dataRegister.getSubmit();
       cy.get("#form-validate > .account").should("contain", message.password2);
     });
 
     it("Create an account with a password only in number", () => {
-      cy.get(account.first).type(user.invalidUser3.firstName);
-      cy.get(account.last).type(user.invalidUser3.lastName);
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd).type(user.invalidUser3.password);
-      cy.get(account.paswdConfirm).type(
+      dataRegister.firstNameInput(user.invalidUser3.firstName);
+      dataRegister.lastNameInput(user.invalidUser3.lastName);
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.passwordInput(user.invalidUser3.password);
+      dataRegister.confirmPasswordInput(
         user.invalidUser3["password-confirmation"]
       );
-      cy.get(getPages.getSubmit()).click();
+      dataRegister.getSubmit();
       cy.get("#form-validate > .account").should("contain", message.password2);
     });
 
     it("Create an account with a password only in special character", () => {
-      cy.get(account.first).type(user.invalidUser4.firstName);
-      cy.get(account.last).type(user.invalidUser4.lastName);
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd).type(user.invalidUser4.password);
-      cy.get(account.paswdConfirm).type(
+      dataRegister.firstNameInput(user.invalidUser4.firstName);
+      dataRegister.lastNameInput(user.invalidUser4.lastName);
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.passwordInput(user.invalidUser4.password);
+      dataRegister.confirmPasswordInput(
         user.invalidUser4["password-confirmation"]
       );
-      cy.get(getPages.getSubmit()).click();
+      dataRegister.getSubmit();
       cy.get("#form-validate > .account").should("contain", message.password2);
     });
 
     it("Create an account with a password only in number & character", () => {
-      cy.get(account.first).type(user.invalidUser5.firstName);
-      cy.get(account.last).type(user.invalidUser5.lastName);
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd).type(user.invalidUser5.password);
-      cy.get(account.paswdConfirm).type(
+      dataRegister.firstNameInput(user.invalidUser5.firstName);
+      dataRegister.lastNameInput(user.invalidUser5.lastName);
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.passwordInput(user.invalidUser5.password);
+      dataRegister.confirmPasswordInput(
         user.invalidUser5["password-confirmation"]
       );
-      cy.get(getPages.getSubmit()).click();
+      dataRegister.getSubmit();
       cy.get("#form-validate > .account").should("contain", message.password2);
     });
 
     it("create an account with a password that is not the same as the confirmed password", () => {
-      cy.get(account.first).type(user.invalidUser6.firstName);
-      cy.get(account.last).type(user.invalidUser6.lastName);
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd).type(user.invalidUser6.password);
-      cy.get(account.paswdConfirm).type(
+      dataRegister.firstNameInput(user.invalidUser6.firstName);
+      dataRegister.lastNameInput(user.invalidUser6.lastName);
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.passwordInput(user.invalidUser6.password);
+      dataRegister.confirmPasswordInput(
         user.invalidUser6["password-confirmation"]
       );
-      cy.get(getPages.getSubmit()).click();
+      dataRegister.getSubmit();
       cy.get("#form-validate > .account").should(
         "contain",
         message.passwordConfirmError
@@ -149,43 +186,27 @@ describe("Test suite Create Account", () => {
     });
 
     it("Create an account with a password only in number & special character", () => {
-      cy.get(account.first).type(user.invalidUser7.firstName);
-      cy.get(account.last).type(user.invalidUser7.lastName);
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd).type(user.invalidUser7.password);
-      cy.get(account.paswdConfirm).type(
+      dataRegister.firstNameInput(user.invalidUser7.firstName);
+      dataRegister.lastNameInput(user.invalidUser7.lastName);
+      dataRegister.emailInput(`${randomEmail}@gmail.com`);
+      dataRegister.passwordInput(user.invalidUser7.password);
+      dataRegister.confirmPasswordInput(
         user.invalidUser7["password-confirmation"]
       );
-      cy.get(getPages.getSubmit()).click();
+      dataRegister.getSubmit();
       cy.get("#form-validate > .account").should("contain", message.password2);
     });
 
-    it("Create an account with the registered email", () => {
-      cy.get(account.first).type(user.validUser.firstName);
-      cy.get(account.last).type(user.validUser.lastName);
-      cy.get(account.email).type(user.validUser.email);
-      cy.get(account.paswd).type(user.validUser.password);
-      cy.get(account.paswdConfirm).type(
+    it.only("Create an account with the registered email", () => {
+      dataRegister.firstNameInput(user.validUser.firstName);
+      dataRegister.lastNameInput(user.validUser.lastName);
+      dataRegister.emailInput(user.validUser.email);
+      dataRegister.passwordInput(user.validUser.password);
+      dataRegister.confirmPasswordInput(
         user.validUser["password-confirmation"]
       );
-      cy.get(getPages.getSubmit()).click();
+      dataRegister.getSubmit();
       cy.get(account.Errormsg).should("contain", message.registerError2);
-    });
-
-    it.only("Create an account with the weakness password", () => {
-      const weakPassword = 1;
-      cy.get(account.first).type(user.validUser.firstName);
-      cy.get(account.last).type(user.validUser.lastName);
-      cy.get(account.email).type(`${dataRegister.randomEmail}@gmail.com`);
-      cy.get(account.paswd)
-        .type(weakPassword)
-        .invoke("val")
-        .should("have.length", 1);
-      cy.get(account.paswdConfirm).type(
-        user.validUser["password-confirmation"]
-      );
-      cy.get(getPages.getSubmit()).click();
-      cy.get("#password-strength-meter").contains("Password Strength: Weak");
     });
   });
 });
