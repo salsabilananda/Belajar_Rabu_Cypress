@@ -37,8 +37,8 @@ module.exports = defineConfig({
         console.log("override after:run");
         await afterRunHook();
       });
-      config.specPattern = ["cypress/e2e/1-Belajar/karis/**/*.cy.js"];
-      return config;
+      // config.specPattern = ["cypress/e2e/1-Belajar/karis/**/*.cy.js"];
+      // return config;
     },
 
     viewportHeight: 800,
